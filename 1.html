@@ -1,0 +1,68 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head> 
+<title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.0/dist/leaflet.css">
+<link rel="stylesheet" href="./src/leaflet-search.css">
+<link rel="stylesheet" href="style.css">
+<style>
+.search-input {
+	font-family:Courier
+}
+.search-input,
+.leaflet-control-search {
+	max-width:400px;
+}
+</style>
+</head>
+
+<body>
+<h3><a href="../"><big>◄</big> Leaflet.Control.Search</a></h3>
+
+<h4>Location on remote page: <em>search locations name and open it in osm website</em></h4>
+<div id="map" class="leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0" style="position: relative; outline: none;"><div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(0px, 0px, 0px);"><div class="leaflet-pane leaflet-tile-pane"><div class="leaflet-layer " style="z-index: 1; opacity: 1;"><div class="leaflet-tile-container leaflet-zoom-animated" style="z-index: 18; transform: translate3d(0px, 0px, 0px) scale(1);"><img alt="" role="presentation" src="http://c.tile.openstreetmap.org/9/274/190.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(174px, -23px, 0px); opacity: 1;"><img alt="" role="presentation" src="http://a.tile.openstreetmap.org/9/274/191.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(174px, 233px, 0px); opacity: 1;"><img alt="" role="presentation" src="http://b.tile.openstreetmap.org/9/273/190.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-82px, -23px, 0px); opacity: 1;"><img alt="" role="presentation" src="http://a.tile.openstreetmap.org/9/275/190.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(430px, -23px, 0px); opacity: 1;"><img alt="" role="presentation" src="http://c.tile.openstreetmap.org/9/273/191.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-82px, 233px, 0px); opacity: 1;"><img alt="" role="presentation" src="http://b.tile.openstreetmap.org/9/275/191.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(430px, 233px, 0px); opacity: 1;"></div></div></div><div class="leaflet-pane leaflet-shadow-pane"></div><div class="leaflet-pane leaflet-overlay-pane"></div><div class="leaflet-pane leaflet-marker-pane"></div><div class="leaflet-pane leaflet-tooltip-pane"></div><div class="leaflet-pane leaflet-popup-pane"></div><div class="leaflet-proxy leaflet-zoom-animated"></div></div><div class="leaflet-control-container"><div class="leaflet-top leaflet-left"><div class="leaflet-control-zoom leaflet-bar leaflet-control"><a class="leaflet-control-zoom-in" href="#" title="Zoom in" role="button" aria-label="Zoom in">+</a><a class="leaflet-control-zoom-out" href="#" title="Zoom out" role="button" aria-label="Zoom out">−</a></div><div class="leaflet-control-search leaflet-control"><label class="search-input" for="searchtext9" style="display: none;"></label><input class="search-input" type="text" size="9" autocomplete="off" autocapitalize="off" placeholder="Search..." id="searchtext9" style="display: none; max-width: 517px;"><ul class="search-tooltip" style="display: none;"></ul><a class="search-cancel" href="#" title="Cancel" style="display: none;"><span>⊗</span></a><a class="search-button" href="#" title="Search..." style=""></a><div class="search-alert" style="display: none;"></div></div></div><div class="leaflet-top leaflet-right"></div><div class="leaflet-bottom leaflet-left"></div><div class="leaflet-bottom leaflet-right"><div class="leaflet-control-attribution leaflet-control"><a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a></div></div></div></div>
+
+<div id="post-it">
+<b>Search values:</b><br>
+OpenStreetMap Data offer by <br>
+<small><a href="http://wiki.openstreetmap.org/wiki/Nominatim">nominatim.osm.org</a></small>
+</div>
+
+<script type="text/javascript" async="" src="https://ssl.google-analytics.com/ga.js"></script><script src="https://unpkg.com/leaflet@1.3.0/dist/leaflet.js"></script>
+<script src="./src/leaflet-search.js"></script>
+<script>
+
+	var map = L.map('map', {
+		zoom: 9,
+		center: L.latLng([41.575730,13.002411]),
+		layers: L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+	});
+
+	L.control.search({
+		url: 'https://nominatim.openstreetmap.org/search?format=json&q={s}',
+		propertyName: 'display_name',
+		jsonpParam: 'json_callback',		
+		propertyLoc: ['lat','lon'],
+		autoCollapse: true,
+		autoType: false,
+		minLength: 2,
+		moveToLocation: function(latlng, title, map) {
+			//https://wiki.openstreetmap.org/wiki/Shortlink
+			var url = L.Util.template('http://osm.org/?mlat={lat}&amp;mlon={lon}#map={zoom}/{lat}/{lon}', {
+				lat: latlng.lat,
+				lon: latlng.lng,
+				zoom: map.getZoom()
+			});
+
+			location.href = url;
+		}
+	})
+	.addTo(map);
+
+</script>
+
+<div id="copy"><a href="http://labs.easyblog.it/">Labs</a> • <a rel="author" href="http://labs.easyblog.it/stefano-cudini/">Stefano Cudini</a></div>
+
+<script type="text/javascript" src="./labs-common.js"></script>
+
+
+</body></html>
